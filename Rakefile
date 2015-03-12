@@ -69,6 +69,22 @@ def id2ref
   end
 end
 
+def fixer
+  con = ActiveRecord::Base.connection
+  n = 1000
+  Benchmark.bm do |x|
+    x.report do
+      n.times do
+        connection = ActiveRecord::Base.connection_handler.connection_pool_list.detect do |l|
+          l.connections.detect do |c|
+            c.object_id == 4
+          end
+        end
+      end
+    end
+  end
+end
+
 task :bm  do
   connect
   bm
@@ -90,6 +106,11 @@ task :id2ref do
   id2ref
 end
 
+task :fixer do
+  connect
+  fixer
+end
+
 task :detect_mysql do
   connect_mysql
   detect
@@ -98,6 +119,11 @@ end
 task :id2ref_mysql do
   connect_mysql
   id2ref
+end
+
+task :fixer_mysql do
+  connect_mysql
+  fixer
 end
 
 task :debug do
