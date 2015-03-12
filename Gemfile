@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 
-gem "makara", "0.3.0.rc3", github: 'taskrabbit/makara'
+gem "makara", "0.3.0.rc3", path: '../../tr/makara'
 gem "activerecord", "4.2"
 gem "newrelic_rpm", "3.7.2.192"
+gem 'byebug'

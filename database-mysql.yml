@@ -1,0 +1,5 @@
+adapter: mysql2
+username: root
+host: localhost
+password: ~
+database: makara_newrelic_test
