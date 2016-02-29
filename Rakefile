@@ -4,6 +4,7 @@ require "yaml"
 require "active_record"
 require "makara"
 require "benchmark"
+require 'byebug'
 
 class User < ::ActiveRecord::Base
   self.table_name = :users
@@ -21,9 +22,14 @@ def connect_mysql
   require_relative 'schema'
 end
 
+def connect_distributed_mysql
+  config = YAML.load_file(File.dirname(__FILE__) + '/database-distributed.yml')
+  ActiveRecord::Base.establish_connection(config)
+  require_relative 'schema'
+end
 
 def bm
-  n = 500
+  n = 1000
   Benchmark.bmbm do |x|
     x.report(:insert){ n.times{|i| User.create(name: "Doug #{i}") } }
     x.report(:select){ n.times{|i| User.find_by(name: "Doug #{i}") } }
@@ -93,6 +99,16 @@ end
 task :bm_nr do
   require "newrelic_rpm"
   connect
+  bm
+end
+
+task :bm_mysql2 do
+  connect_mysql
+  bm
+end
+
+task :bm_distributed do
+  connect_distributed_mysql
   bm
 end
 

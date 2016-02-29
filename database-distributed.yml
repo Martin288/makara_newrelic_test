@@ -1,0 +1,13 @@
+adapter: distributed_mysql
+username: root
+host: localhost
+password: ~
+database: makara_newrelic_test
+makara:
+  blacklist_duration: 2
+  master_ttl: 5
+  connections:
+    - role: master
+    - role: slave
+    - role: slave
+
